@@ -46,7 +46,15 @@ def directory():
                 print(contacts)
                 choice =(int(input("Which Contact would you like to edit? ")))
                 for index,contact in enumerate(contacts):
+                    
+                    selection = (int(input("Which part of the contact would you like to edit?")))
+                    # if selection = name, "Please enter updated name"
+                    #if selection = phone_no, "Please enter updated phone no."
+                    # if selection = email, "Please enter updated email"
+                    
+                    #print (" Contact has been updated!")
                     pass
+                    
                     
 
                 
