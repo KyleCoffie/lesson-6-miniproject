@@ -2,7 +2,82 @@
 # Create a user-friendly command-line interface (CLI) for the Contact Management System.
 # Display a welcoming message and provide a menu with the following options:
 
-contacts = []
+contacts = {}
+def add_contact():
+    name = input("What is the contact's name? ")
+    phone_no = input("What is the contact's phone number? ")
+    email = input("What is the contact's email? ")
+    new_contact={"name":name, "phone":phone_no, "email":email}
+    contacts[phone_no]= new_contact
+    print("Contact added!")
+
+def delete_contact():
+    display_contacts()
+    try:
+        contacttodelete = int(input("Enter the number next to the name you wish to delete. "))
+        if contacttodelete -1 >=0 and contacttodelete -1 <len(contacts):
+            removed_contact = contacts.pop(contacttodelete -1)
+            print(f"{removed_contact} has been deleted!")
+        else:
+            print(f"{contacttodelete} was not found")
+    except ValueError:
+        print("Invaid input! Please try again")
+
+def edit_contact():
+    display_contacts()
+    choice_phone_no =input("Enter the phone number of the person would you like to edit? ")
+    if choice_phone_no in contacts:
+        print ("1. Name")
+        print ("2. Phone")
+        print ("3. Email")
+   
+        selection = (int(input("Which part of the contact would you like to edit?")))
+        if selection == 1:
+           updated_name = input( "Please enter updated name")
+           contacts[choice_phone_no]["name"] = updated_name
+        if selection == 2: 
+           updated_phone = input( "Please enter updated phone no.")
+           contacts[choice_phone_no]["phone"] = updated_phone
+        if selection == 3:
+            updated_email = ("Please enter updated email")
+            contacts[choice_phone_no]["email"] = updated_email
+        print (" Contact has been updated!")
+    else:
+        print("Contact with that phone number not found")
+        
+def search_contact(name,contacts):
+    for contact in contacts:
+        if contact["name"].lower()==name.lower:
+            return contact
+        return None
+    search_name = input("What name are you looking for in your contacts?")
+    result = search_contact(search_name, contacts)
+    if result:
+        print(f"Contact found: {result}")
+    else: print ("Contact not found")
+        
+def display_contacts():
+    if contacts == {}:
+        print("There are no contacts in your list! Go and make some friends!!!")
+    else:
+        print("Your contacts are: ")
+        for key,data in contacts.items():
+            print (f"{key}: Name:{data["name"]} Phone Number: {data["phone"]} Email: {data["email"]}")
+
+def export_contact(name, contacts):
+    for contact in contacts:
+        if contact["name"].lower()==name.lower:
+            return contact
+        return None
+    export_name = input("Wich contact would you like to export to the text file?")
+    result = export_contact(export_name,contacts)
+    if result:
+        with open('contact_lists.txt', 'w') as file:
+            file.write(f'{result}')
+            print(f"{result} has been exported to the contact_lists.txt file!")
+    else:
+        print("Contact not found")        
+
 
 def directory():
     while True:
@@ -19,73 +94,20 @@ def directory():
         print("7. Import contacts from a text file")
         print("8. Quit")
         choice = input("Please make a selection: ")
-
-        def delete_contact():
-            display_contacts()
-            try:
-                contacttodelete = int(input("Enter the number next to the name you wish to delete. "))
-                if contacttodelete -1 >=0 and contacttodelete -1 <len(contacts):
-                    removed_contact = contacts.pop(contacttodelete -1)
-                    print(f"{removed_contact} has been deleted!")
-                else:
-                    print(f"{contacttodelete} was not found")
-            except ValueError:
-                print("Invaid input! Please try again")
-                
-        def edit_contact(contacts, index, new_name=None, new_no=None, new_email=None):
-            if index < 0 or index >= len(contacts):
-                print("Invaild contact index")
-                return
-            if new_name:
-                contacts[index+1].name = new_name
-            elif new_no:
-                contacts[index+2].phone_no = new_no
-            elif new_email:
-                contacts[index+3].email = new_email
-            else:
-                print(contacts)
-                choice =(int(input("Which Contact would you like to edit? ")))
-                for index,contact in enumerate(contacts):
-                    
-                    selection = (int(input("Which part of the contact would you like to edit?")))
-                    # if selection = name, "Please enter updated name"
-                    #if selection = phone_no, "Please enter updated phone no."
-                    # if selection = email, "Please enter updated email"
-                    
-                    #print (" Contact has been updated!")
-                    pass
-                    
-                    
-
-                
-                
-        
-        
-        def display_contacts():
-            if contacts == []:
-                print("There are no contacts in your list! Go and make some friends!!!")
-            else:
-                print("Your contacts are: ")
-                for index,contact in enumerate (contacts):
-                    print (f"{index+1}: Name:{contact[0]} Phone Number: {contact[1]} Email: {contact[2]}")
+               
 
         if choice == "1":
-            name = input("What is the contact's name? ")
-            phone_no = input("What is the contact's phone number? ")
-            email = input("What is the contact's email? ")
-            new_contact=[name, phone_no, email]
-            contacts.append(new_contact)
-            print("Contact added!")
+            add_contact()
         elif choice == "2":
             edit_contact()
         elif choice == "3":
             delete_contact()
         elif choice == "4":
-            pass
+            search_contact(contacts)
         elif choice == "5":
             display_contacts()
         elif choice == "6":
-            pass
+            export_contact()
         elif choice == "7":
             pass
         elif choice == "8":
