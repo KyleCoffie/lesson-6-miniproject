@@ -68,6 +68,16 @@ def export_contact():
         for key, data in contacts.items():
             file.write(f'{key} {data}')
     print(f"Contacts has been exported to the contact_lists.txt file!")
+
+def import_contact():
+    
+    with open('contact_lists.txt', 'r') as file:
+        for line in file:
+            key,data = line.split(" ",1)#key =number... data inside{}    " ",1 splits after the first space
+            contacts[key] = eval(data.strip())
+            #contacts dict [key]= key in contact_list...data.strip() gets rid of extra space
+            #eval turns str in dict
+    print(f"Contacts has been imported from the contact_lists.txt file!")
         
     
 
@@ -104,7 +114,7 @@ def directory():
         elif choice == "6":
             export_contact()
         elif choice == "7":
-            pass
+            import_contact()
         elif choice == "8":
             print("Thank for using the contact management system.")
             break
