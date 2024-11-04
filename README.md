@@ -1,0 +1,1 @@
+This is my Contact management system it has an interactive menu where you can add, delete, search using a phone number, edit name, phone number or e-mail, display, and export a contact to a text file. There is also an exit feature.
