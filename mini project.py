@@ -15,8 +15,8 @@ def delete_contact():
     display_contacts()
     try:
         contacttodelete = int(input("Enter the number next to the name you wish to delete. "))
-        if contacttodelete -1 >=0 and contacttodelete -1 <len(contacts):
-            removed_contact = contacts.pop(contacttodelete -1)
+        if contacttodelete -1 >=0 and contacttodelete -1 <len(contacts):# subtracting 1 from the users input will give the correct index of the contact they want to delete.
+            removed_contact = contacts.pop(contacttodelete -1)#the .pop( method removes anitem in a specified position)
             print(f"{removed_contact} has been deleted!")
         else:
             print(f"{contacttodelete} was not found")
@@ -45,16 +45,14 @@ def edit_contact():
     else:
         print("Contact with that phone number not found")
         
-def search_contact(name,contacts):
-    for contact in contacts:
-        if contact["name"].lower()==name.lower:
-            return contact
-        return None
-    search_name = input("What name are you looking for in your contacts?")
-    result = search_contact(search_name, contacts)
-    if result:
-        print(f"Contact found: {result}")
-    else: print ("Contact not found")
+def search_contact(name):
+    contact_found = False#set to False so that when found statement can be set to true when found
+    for data in contacts.values():#values returns a lists of all of the values
+        if data["name"].lower() == name.lower():
+            print(f"Contact found: {data}")
+            contact_found = True
+    if not contact_found:
+        print ("Contact not found")
         
 def display_contacts():
     if contacts == {}:
@@ -64,19 +62,14 @@ def display_contacts():
         for key,data in contacts.items():
             print (f"{key}: Name:{data["name"]} Phone Number: {data["phone"]} Email: {data["email"]}")
 
-def export_contact(name, contacts):
-    for contact in contacts:
-        if contact["name"].lower()==name.lower:
-            return contact
-        return None
-    export_name = input("Wich contact would you like to export to the text file?")
-    result = export_contact(export_name,contacts)
-    if result:
-        with open('contact_lists.txt', 'w') as file:
-            file.write(f'{result}')
-            print(f"{result} has been exported to the contact_lists.txt file!")
-    else:
-        print("Contact not found")        
+def export_contact():
+    
+    with open('contact_lists.txt', 'w') as file:
+        for key, data in contacts.items():
+            file.write(f'{key} {data}')
+    print(f"Contacts has been exported to the contact_lists.txt file!")
+        
+    
 
 
 def directory():
@@ -103,7 +96,9 @@ def directory():
         elif choice == "3":
             delete_contact()
         elif choice == "4":
-            search_contact(contacts)
+            search_name = input("What name are you looking for in your contacts?")
+
+            search_contact(search_name)
         elif choice == "5":
             display_contacts()
         elif choice == "6":
